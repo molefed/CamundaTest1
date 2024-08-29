@@ -1,0 +1,18 @@
+name: camunda-test1-local
+
+volumes:
+  camunda-test1-volume:
+
+services:
+
+  postgres:
+    container_name: camunda-test1-db
+    image: postgres
+    volumes:
+      - camunda-test1-volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: camunda-test1
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5443:5432"
