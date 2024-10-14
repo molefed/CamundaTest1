@@ -1,4 +1,4 @@
-package ru.alidi.camunda;
+package ru.alidi.camunda.delegate;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
