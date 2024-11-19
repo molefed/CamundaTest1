@@ -9,12 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class SpringBootProcessTest {
@@ -30,16 +28,17 @@ public class SpringBootProcessTest {
     TaskService taskService;
 
     private static final ConditionFactory WAIT = await()
-            .atMost(Duration.ofSeconds(5))
+            .atMost(Duration.ofSeconds(10))
             .pollInterval(Duration.ofMillis(500))
-            .pollDelay(Duration.ofMillis(1));
+            .pollDelay(Duration.ofMillis(50));
 
     @Test
     public void test() {
 
-        variables = new HashMap<>();
-        variables.put("CLIENT_ID_KEY", "test_client_id");
-        variables.put("ORDER_ITEMS_COUNT", 700);
+        variables = Map.of(
+                "CLIENT_ID_KEY", "test_client_id",
+                "ORDER_ITEMS_COUNT", 7000
+        );
 
         var processInstance = runtimeService.startProcessInstanceByKey(PROCESS_KEY, variables);
 

@@ -8,8 +8,8 @@
       <bpmn:lane id="Lane_10qqhv2" name="Вызов внешнего апи">
         <bpmn:flowNodeRef>say-hello</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
-        <bpmn:flowNodeRef>Event_1acwzid</bpmn:flowNodeRef>
         <bpmn:flowNodeRef>Activity_1ljotye</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Event_1acwzid</bpmn:flowNodeRef>
       </bpmn:lane>
       <bpmn:lane id="Lane_1p3gdwi">
         <bpmn:flowNodeRef>Gateway_12fb629</bpmn:flowNodeRef>
@@ -110,7 +110,7 @@
       </bpmn:timerEventDefinition>
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_1c9prew" sourceRef="Event_0wv49x9" targetRef="Activity_0ns9sor" />
-    <bpmn:serviceTask id="Activity_0ns9sor" name="Не дождались">
+    <bpmn:serviceTask id="Activity_0ns9sor" name="Не дождались" camunda:class="ru.alidi.camunda.delegate.NotWaitSendingDelegate">
       <bpmn:incoming>Flow_1c9prew</bpmn:incoming>
       <bpmn:outgoing>Flow_0m915n8</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -120,14 +120,14 @@
       <bpmn:errorEventDefinition id="ErrorEventDefinition_07yjt6f" errorRef="Error_0566gvb" />
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_01wwc2k" sourceRef="Event_0c2jqds" targetRef="Activity_1ljotye" />
-    <bpmn:endEvent id="Event_1acwzid">
-      <bpmn:incoming>Flow_1o5hs5z</bpmn:incoming>
-    </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1o5hs5z" sourceRef="Activity_1ljotye" targetRef="Event_1acwzid" />
     <bpmn:serviceTask id="Activity_1ljotye" name="Ошибка загрузки большого заказа" camunda:class="ru.alidi.camunda.delegate.ErrorDelegate">
       <bpmn:incoming>Flow_01wwc2k</bpmn:incoming>
       <bpmn:outgoing>Flow_1o5hs5z</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1acwzid">
+      <bpmn:incoming>Flow_1o5hs5z</bpmn:incoming>
+    </bpmn:endEvent>
   </bpmn:process>
   <bpmn:error id="Error_0566gvb" name="LOAD_BIG_ORDER_ERROR" errorCode="LOAD_BIG_ORDER_ERROR" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
@@ -197,18 +197,18 @@
         <dc:Bounds x="1010" y="330" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1acwzid_di" bpmnElement="Event_1acwzid">
-        <dc:Bounds x="792" y="92" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_06atgpk_di" bpmnElement="Activity_1ljotye">
         <dc:Bounds x="640" y="70" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1weihxv_di" bpmnElement="Event_0wv49x9">
-        <dc:Bounds x="922" y="432" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_04w71jb_di" bpmnElement="Event_1acwzid">
+        <dc:Bounds x="792" y="92" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0qna6zk_di" bpmnElement="Event_0c2jqds">
         <dc:Bounds x="552" y="172" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1weihxv_di" bpmnElement="Event_0wv49x9">
+        <dc:Bounds x="922" y="432" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="SequenceFlow_1fp17al_di" bpmnElement="SequenceFlow_1fp17al">
         <di:waypoint x="248" y="117" />

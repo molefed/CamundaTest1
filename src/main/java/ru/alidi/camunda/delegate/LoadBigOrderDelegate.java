@@ -1,5 +1,6 @@
 package ru.alidi.camunda.delegate;
 
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
@@ -11,10 +12,12 @@ public class LoadBigOrderDelegate implements JavaDelegate {
 
         System.out.println("Заказ большой. %s элементов.".formatted(var));
 
+        if (var > 1000) {
 
-//        if (var < 0) {
-//            execution.createIncident("LOAD_BIG_ORDER_ERROR", "Какая-то ошибка");
-//        }
+            System.out.println("Кидаем исключение LOAD_BIG_ORDER_ERROR.");
+
+            throw new BpmnError("LOAD_BIG_ORDER_ERROR", "Какая-то ошибка");
+        }
     }
 
 }
