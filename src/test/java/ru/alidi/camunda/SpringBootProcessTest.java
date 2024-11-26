@@ -28,16 +28,18 @@ public class SpringBootProcessTest {
     TaskService taskService;
 
     private static final ConditionFactory WAIT = await()
-            .atMost(Duration.ofSeconds(10))
+            .atMost(Duration.ofSeconds(50))
             .pollInterval(Duration.ofMillis(500))
             .pollDelay(Duration.ofMillis(50));
 
     @Test
-    public void test() {
+    public void test() throws InterruptedException {
+
+        // https://www.youtube.com/watch?v=qoAdXLh7vRE&list=PLmLqPF63bMozWwyXeyclGi48kxbFcDBFL&index=4 22:39
 
         variables = Map.of(
                 "CLIENT_ID_KEY", "test_client_id",
-                "ORDER_ITEMS_COUNT", 7000
+                "ORDER_ITEMS_COUNT", 170
         );
 
         var processInstance = runtimeService.startProcessInstanceByKey(PROCESS_KEY, variables);
@@ -50,6 +52,14 @@ public class SpringBootProcessTest {
         waitUntilActivityWillBeExecuted(processInstance.getProcessInstanceId(), "Ждем юзера");
 
         completeUserTask(processInstance.getProcessInstanceId(), "Ждем юзера", Map.of());
+
+//        waitUntilActivityWillBeExecuted(processInstance.getProcessInstanceId(), "Ждем евент гетвей");
+        Thread.sleep(Duration.ofSeconds(40));
+
+        var resultMessage = runtimeService.createMessageCorrelation("msgReject")
+                                                        .processInstanceId(processInstance.getProcessInstanceId())
+//                                                        .setVariable("payment_type", "creditCard")
+                                                        .correlateWithResult();
 
         WAIT.untilAsserted(() -> {
             BpmnAwareTests.assertThat(processInstance).isEnded();
